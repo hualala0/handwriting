@@ -7,10 +7,15 @@ module.exports = (grunt) => {
   const packageData = grunt.file.readJSON('package.json');
   const BUILD_VERSION = packageData.version + '-' + (process.env.BUILD_NUMBER ? process.env.BUILD_NUMBER : '0');
   const libPluginPath = 'lib/main/ts/Main.js';
+  const libDemoPath = 'lib/demo/ts/Demo.js';
+  const libHandwriting = 'lib/handwriting/ts/index.js'
   const scratchPluginPath = 'scratch/compiled/plugin.js';
   const scratchPluginMinPath = 'scratch/compiled/plugin.min.js';
   const tsDemoSourceFile = path.resolve('src/demo/ts/Demo.ts');
+  const tsPluginoSourceFile = path.resolve('src/handwriting/ts/index.ts');
   const jsDemoDestFile = path.resolve('scratch/compiled/demo.js');
+  const handwritingFile = 'scratch/compiled/handwriting.js';
+  const demoFile = 'scratch/compiled/demo.js';
 
   grunt.initConfig({
     pkg: packageData,
@@ -46,8 +51,24 @@ module.exports = (grunt) => {
       plugin: {
         files: [
           {
+            src: libHandwriting,
+            dest: handwritingFile
+          }
+        ]
+      },
+      plugin1: {
+        files: [
+          {
             src: libPluginPath,
             dest: scratchPluginPath
+          }
+        ]
+      },
+      plugin2: {
+        files: [
+          {
+            src: libDemoPath,
+            dest: demoFile
           }
         ]
       }
@@ -86,6 +107,14 @@ module.exports = (grunt) => {
           'dist/handwritingplugin/plugin.min.js': [
             'src/text/license-header.js',
             scratchPluginMinPath
+          ],
+          'dist/handwritingplugin/handwriting/handwriting.js': [
+            'src/text/license-header.js',
+            handwritingFile
+          ],
+          'dist/handwritingplugin/demo/demo.js': [
+            'src/text/license-header.js',
+            jsDemoDestFile
           ]
         }
       }
@@ -99,13 +128,63 @@ module.exports = (grunt) => {
       }
     },
 
+    replace: {
+      demo: {
+        options: {
+          patterns: [
+            {
+              match: /..\/..\/scratch\/compiled\/demo.js/g,
+              replacement: './demo.js'
+            },
+            {
+              match: /..\/..\/node_modules\/tinymce\/tinymce.js/g,
+              replacement: '../../../node_modules/tinymce/tinymce.js'
+            }
+          ]
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'src/demo/',
+            src: ['index.html'], 
+            dest: 'dist/handwritingplugin/demo'
+          }
+        ]
+      },
+      handwriting: {
+        options: {
+          patterns: [
+            {
+              match: /..\/..\/scratch\/compiled\/handwriting.js/g,
+              replacement: './handwriting.js'
+            }
+          ]
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'src/handwriting/',
+            src: ['index.html'], 
+            dest: 'dist/handwritingplugin/handwriting'
+          }
+        ]
+      }
+    },
+
     webpack: {
       options: {
         mode: 'development',
         watch: true
       },
       dev: {
-        entry: tsDemoSourceFile,
+        entry: () => {
+          return new Promise((resolve)=>{
+            resolve({
+               demo:tsDemoSourceFile,
+               handwriting:tsPluginoSourceFile,
+            });
+          });
+        },
         devtool: 'source-map',
 
         resolve: {
@@ -114,11 +193,6 @@ module.exports = (grunt) => {
 
         module: {
           rules: [
-            {
-              test: /\.js$/,
-              use: [ 'source-map-loader' ],
-              enforce: 'pre'
-            },
             {
               test: /\.ts$/,
               use: [
@@ -137,7 +211,7 @@ module.exports = (grunt) => {
         plugins: [ new LiveReloadPlugin(), new CheckerPlugin() ],
 
         output: {
-          filename: path.basename(jsDemoDestFile),
+          filename: '[name].js',
           path: path.dirname(jsDemoDestFile)
         }
       }
@@ -159,6 +233,7 @@ module.exports = (grunt) => {
     'uglify',
     'concat',
     'copy',
+    'replace',
     'version'
   ]);
 };

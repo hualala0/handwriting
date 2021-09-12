@@ -8,6 +8,8 @@ Plugin();
 
 tinymce.init({
   selector: 'textarea.tinymce',
-  plugins: 'code handwritingplugin',
-  toolbar: 'handwritingplugin'
+  external_plugins: {
+    'handwriting': 'http://localhost:8080/dist/handwritingplugin/plugin.js',
+  },
+  toolbar: 'handwriting',
 });
