@@ -123,7 +123,8 @@ module.exports = (grunt) => {
     copy: {
       css: {
         files: [
-          { src: [ 'CHANGELOG.txt', 'LICENSE.txt' ], dest: 'dist/handwritingplugin', expand: true }
+          { src: [ 'CHANGELOG.txt', 'LICENSE.txt' ], dest: 'dist/handwritingplugin', expand: true },
+          { src: [ 'README.md' ], dest: 'dist/handwritingplugin/demo', expand: true }
         ]
       }
     },
@@ -135,10 +136,6 @@ module.exports = (grunt) => {
             {
               match: /..\/..\/scratch\/compiled\/demo.js/g,
               replacement: './demo.js'
-            },
-            {
-              match: /..\/..\/node_modules\/tinymce\/tinymce.js/g,
-              replacement: '../../../node_modules/tinymce/tinymce.js'
             }
           ]
         },
