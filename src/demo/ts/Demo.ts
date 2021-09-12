@@ -9,7 +9,7 @@ Plugin();
 tinymce.init({
   selector: 'textarea.tinymce',
   external_plugins: {
-    'handwriting': 'http://localhost:8080/dist/handwritingplugin/plugin.js',
+    'handwriting': 'https://hualala0.github.io/handwriting/dist/handwritingplugin/plugin.js',
   },
   toolbar: 'handwriting',
 });
