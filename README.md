@@ -1,3 +1,13 @@
 # handwritingplugin TinyMCE Plugin
 
-Welcome stranger! This is a repo containing the handwritingplugin TinyMCE plugin.
+It is a handwrting plugin for TinyMCE Plugin.
+
+## start
+
+```
+npm install pnpm -g
+pnpm install
+pnpn build
+```
+
+Push `/dist` into your project.
