@@ -147,6 +147,7 @@ export class Control{
 
   changeColor = (e: any): void => {
     if(!e.target.classList.contains('color')) return;
+    this.curDraw = this.pen;
     this.curDraw.penColor = e.target.style.backgroundColor;
   }
 

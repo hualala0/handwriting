@@ -125,6 +125,7 @@
         this.changeColor = function (e) {
           if (!e.target.classList.contains('color'))
             return;
+          _this.curDraw = _this.pen;
           _this.curDraw.penColor = e.target.style.backgroundColor;
         };
         this.receiveMessage = function (e) {
