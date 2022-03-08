@@ -2,6 +2,8 @@
 
 It is a handwrting plugin for TinyMCE Plugin.
 
+[try in browser](https://hulala1a.github.io/handwriting/dist/handwritingplugin/demo/)
+
 ## start
 
 ```
