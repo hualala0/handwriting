@@ -13,3 +13,7 @@ pnpn build
 ```
 
 Push `/dist` into your project.
+
+## todo
+
+public packages to npm
